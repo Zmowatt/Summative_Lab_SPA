@@ -1,0 +1,114 @@
+/* General Page Styling */
+body {
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+/* Title */
+h1 {
+  text-align: center;
+  color: #007acc;
+  margin-bottom: 20px;
+}
+
+/* Search Form */
+form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+#word {
+  width: 250px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+  outline: none;
+}
+
+#button {
+  padding: 8px 15px;
+  background: #007acc;
+  color: white;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+
+#button:hover {
+  background: #005fa3;
+}
+
+/* Results Section */
+#results {
+  max-width: 600px;
+  margin: 0 auto 30px;
+  padding: 15px;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+  padding: 5px 10px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 4px;
+}
+
+#say-it {
+  background: #28a745;
+  color: #fff;
+}
+
+#say-it:hover {
+  background: #1f7a33;
+}
+
+#define-btn, .define-me {
+  background: #ffc107;
+  color: #000;
+}
+
+#define-btn:hover, .define-me:hover {
+  background: #e0a800;
+}
+
+/* Definitions List */
+#definitions {
+  list-style: none;
+  padding: 0;
+}
+
+#definitions li {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 8px;
+}
+
+#definitions p {
+  margin: 4px 0;
+}
+
+/* Favorites Section */
+#fave-list {
+  max-width: 600px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.favorited {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid #ddd;
+}

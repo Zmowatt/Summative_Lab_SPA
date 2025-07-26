@@ -1,69 +1,97 @@
-// document.addEventListener("DOMContentLoaded", (e) => {
-//     e.preventDefault();
-// })
-
-
 async function wordSearch(input) {
     try {
-        const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+        const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${input}`);
         const data = await response.json();
         console.log(data)
-        displayInfo(data)
+        displayInfo(data[0])
      } catch (error) {
         alert("There was an error with the search")
         console.log(error.message)
+        return;
      }
 }
 
     const display = document.querySelector("#results");
     const button = document.querySelector("#button");
-    const favorites = document.querySelector("#favorites");
+    const faveList = document.querySelector("#fave-list");
     
 
 function displayInfo(input){
     display.innerHTML = "";
     
-    const results = document.createElement("div");
-
+    
+    const phoneticText = input.phonetics?.[0]?.text || "No phonetic available";
+    const audioUrl = input.phonetics.find(p => p.audio)?.audio;
+    
     display.innerHTML = `
-        <p id="searched-word"><strong>${input.word}</strong><button id="fave-btn">Add to Favorites<button></p>
-        <p id="phonetics"><em>${input.phonetics[0].text}</em> 
-        <p>Want to here it?</p> 
-        </p>
+        <h2 id="searched-word">${input.word}</h2>
+        <p id="phonetics"><em>${phoneticText} </em></p>
+        <p><button id="say-it">Want to hear it?</button></p>
+        <button id="fave-btn">Add to Favorites</button> 
         <ul id="definitions"><strong>Definitions:</strong></ul>
-    `
-    results.appendChild('results')
+    `;
+   
+    
+    document.querySelector("#say-it").addEventListener('click', () => {
+        if(audioUrl) {new Audio(audioUrl).play();
+    } else {
+        alert("Sorry! No pronunciation available for this word.")
+        }
+    });
 
     listMeanings(input.meanings);  
-}
 
-function listMeanings(defArray){
-    defArray.forEach(() => {
-        const meaning = document.createElement('li')
-        const partOfSpeech = document.createElement('p');
-        const definition = document.createElement('p');
-        const example = document.createElement('p');
-        const synonyms = document.createElement('p');
-        const antoyms = document.createElement('p');
+    const faveButton = document.querySelector("#fave-btn");
 
-        partOfSpeech = defArray.partOfSpeech;
-        definition = defArray.definitions[0].definition;
-        example = defArray.definitions[0].example;
-        synonyms = defArray.definitions[0].synonyms;
-        antoyms = defArray.definitions[0].antonyms;
+    faveButton.addEventListener('click', (e) => {
+        e.preventDefault();
 
-        meaning.innerHTML = `
-        ${partOfSpeech}
-        ${definition}
-        ${example}
-        ${synonyms}
-        ${antoyms}
-        `
+        const faveItem = document.createElement('div')
+        faveItem.classList.add('favorited');
+        
+        faveItem.innerHTML = `
+          <span>${input.word}</span>
+            <button class="define-me">Define</button>
+        `;
 
-        const defList = querySelector('#definitions');
+       faveList.appendChild(faveItem);
 
-        defList.appendChild('meaning');
+        faveItem.querySelector('.define-me').addEventListener('click', () => {
+           
+            wordSearch(input.word)
+        })
+
     })
 }
 
-button.addEventListener("submit", wordSearch(word.value))
+function listMeanings(defArray){
+
+        const defList = document.querySelector('#definitions');
+
+        defArray.forEach((meaningObj) => {
+            const meaning = document.createElement('li');
+        
+            meaningObj.definitions.forEach(def => {
+                meaning.innerHTML += `
+                    <p><strong>${meaningObj.partOfSpeech}</strong>: ${def.definition}</p>
+                    ${def.example ? `<p><em>Example: ${def.example}</em></p>` : ""}
+                `;
+            });
+
+        defList.appendChild(meaning);
+    })
+}
+
+const form = document.querySelector("#word-input")
+
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const word = document.querySelector("#word").value.trim();
+    if(!word){
+        alert("Word not found. Try Again.")
+        return;
+    }
+    wordSearch(word);
+});
+
+
